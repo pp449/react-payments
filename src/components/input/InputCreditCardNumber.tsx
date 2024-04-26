@@ -7,6 +7,7 @@ import CARD_INPUTBOX_NAME from "../../constants/cardInputBoxName";
 interface InputCreditCardNumberProps {
   inputValue: CardNumberValue;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleBlur: (e: React.FocusEvent<HTMLInputElement, Element>) => void;
   inputError: boolean;
 }
 
@@ -18,6 +19,7 @@ interface InputboxData {
 const InputCreditCardNumber = ({
   inputValue,
   handleChange,
+  handleBlur,
   inputError,
 }: InputCreditCardNumberProps) => {
   const inputboxData: InputboxData[] = [
@@ -45,13 +47,16 @@ const InputCreditCardNumber = ({
       <InputWrapper>
         {inputboxData.map((data, idx) => (
           <InputBox
+            key={`creditCardNumber${idx + 1}`}
             inputValue={data.inputValue}
             handleChange={handleChange}
+            onBlur={handleBlur}
             size="small"
             placeholder="1234"
             id={`creditCardNumber${idx + 1}`}
             name={data.name}
             isError={inputError}
+            autoFocus={idx === 0}
           />
         ))}
       </InputWrapper>

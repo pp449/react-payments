@@ -3,38 +3,32 @@ import CARD_FORM_MESSAGE from "../../constants/cardFormMessage";
 import styled from "@emotion/styled";
 import CARD_INPUTBOX_NAME from "../../constants/cardInputBoxName";
 
-interface InputOwnerNameProps {
+interface InputCvcProps {
   inputValue: string;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleBlur: (e: React.FocusEvent<HTMLInputElement, Element>) => void;
   inputError: boolean;
 }
 
-const InputOwnerName = ({
-  inputValue,
-  handleChange,
-  handleBlur,
-  inputError,
-}: InputOwnerNameProps) => {
+const InputCvc = ({ inputValue, handleChange, inputError, handleBlur }: InputCvcProps) => {
   return (
     <InputContainer>
-      <InputLabel htmlFor="ownerName">{CARD_FORM_MESSAGE.cardOwner}</InputLabel>
+      <InputLabel htmlFor="cvcNumber">{CARD_FORM_MESSAGE.cvc}</InputLabel>
       <InputBox
-        inputValue={inputValue.toUpperCase()}
+        inputValue={inputValue}
         handleChange={handleChange}
-        onBlur={handleBlur}
         size="large"
-        placeholder="JOHN DOE"
-        id="ownerName"
-        name={CARD_INPUTBOX_NAME.owner.name}
+        placeholder="cvc 3자리"
+        id="cvcNumber"
+        name={CARD_INPUTBOX_NAME.info.cvc}
         isError={inputError}
-        autoFocus
+        onBlur={handleBlur}
       />
     </InputContainer>
   );
 };
 
-export default InputOwnerName;
+export default InputCvc;
 
 const InputContainer = styled.div`
   display: flex;

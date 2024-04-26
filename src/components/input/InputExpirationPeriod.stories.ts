@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import InputExpirationPeriod from "./InputExpirationPeriod";
 
 const meta = {
-  title: "InputExpirationPeriod",
+  title: "Payment/InputExpirationPeriod",
   component: InputExpirationPeriod,
   parameters: {
     layout: "centered",
@@ -18,6 +18,9 @@ const meta = {
     },
     handleChange: {
       description: "카드 유효기간 핸들러",
+    },
+    handleBlur: {
+      description: "카드 유효기간 블러 핸들러",
     },
     inputError: {
       description: "에러 발생 여부",
@@ -44,6 +47,7 @@ export const Default: Story = {
       year: "",
     },
     handleChange: () => {},
+    handleBlur: () => {},
     inputError: false,
   },
 };

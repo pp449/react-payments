@@ -3,30 +3,26 @@ import CARD_FORM_MESSAGE from "../../constants/cardFormMessage";
 import styled from "@emotion/styled";
 import CARD_INPUTBOX_NAME from "../../constants/cardInputBoxName";
 
-interface InputOwnerNameProps {
+interface InputCvcProps {
   inputValue: string;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleBlur: (e: React.FocusEvent<HTMLInputElement, Element>) => void;
   inputError: boolean;
 }
 
-const InputOwnerName = ({
-  inputValue,
-  handleChange,
-  handleBlur,
-  inputError,
-}: InputOwnerNameProps) => {
+const InputPassword = ({ inputValue, handleChange, handleBlur, inputError }: InputCvcProps) => {
   return (
     <InputContainer>
-      <InputLabel htmlFor="ownerName">{CARD_FORM_MESSAGE.cardOwner}</InputLabel>
+      <InputLabel htmlFor="password">{CARD_FORM_MESSAGE.twoDigitPassword}</InputLabel>
       <InputBox
-        inputValue={inputValue.toUpperCase()}
+        type="password"
+        inputValue={inputValue}
         handleChange={handleChange}
         onBlur={handleBlur}
         size="large"
-        placeholder="JOHN DOE"
-        id="ownerName"
-        name={CARD_INPUTBOX_NAME.owner.name}
+        placeholder="카드 비밀번호"
+        id="password"
+        name={CARD_INPUTBOX_NAME.authentication.password}
         isError={inputError}
         autoFocus
       />
@@ -34,7 +30,7 @@ const InputOwnerName = ({
   );
 };
 
-export default InputOwnerName;
+export default InputPassword;
 
 const InputContainer = styled.div`
   display: flex;
