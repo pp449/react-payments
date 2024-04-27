@@ -6,7 +6,7 @@ import SuccessRegistration from "./pages/payments/SuccessRegistration";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/react-payments/dist">
       <Routes>
         <Route path="/" element={<CardRegistration />} />
         <Route path="/register/success" element={<SuccessRegistration />} />

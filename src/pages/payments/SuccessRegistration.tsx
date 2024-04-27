@@ -8,7 +8,10 @@ const SuccessRegistration = () => {
   const router = useNavigate();
   const { selectedCard, cardNumber } = location.state;
 
-  if (!selectedCard || !cardNumber) router("/");
+  if (!selectedCard || !cardNumber) {
+    router("/");
+    return;
+  }
 
   return (
     <Container>
