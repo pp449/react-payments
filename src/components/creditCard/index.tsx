@@ -1,9 +1,4 @@
-import {
-  CardNumberValue,
-  ExpirationPeriodValue,
-  InfoValue,
-  OwnerValue,
-} from "../../@types/CreditCard";
+import { ExpirationPeriodValue } from "../../@types/CreditCard";
 import { CardType } from "../../constants/cardType";
 import SIGN from "../../constants/sign";
 import CreditCardBack from "./back";

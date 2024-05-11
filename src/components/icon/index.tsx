@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 
-import THEME from "../../styles/theme";
 import IconKind from "../../@types/IconKind";
 import IconSource from "../../constants/IconSource";
 
