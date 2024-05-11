@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
-import CheckBox from "../../components/icon/CheckBox";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../../components/button/common";
+import Icon from "../../components/icon";
 
 const SuccessRegistration = () => {
   const location = useLocation();
@@ -16,7 +16,7 @@ const SuccessRegistration = () => {
   return (
     <Container>
       <CheckBoxWrapper>
-        <CheckBox />
+        <Icon kind="checkBox" />
       </CheckBoxWrapper>
       <SuccessText>{`${cardNumber}로 시작하는`}</SuccessText>
       <SuccessText>{`${selectedCard}가 등록되었어요.`}</SuccessText>
@@ -36,6 +36,7 @@ const Container = styled.div`
   margin: 0 auto;
   max-width: 350px;
   padding: 15% 5%;
+  z-index: -1;
 `;
 
 const CheckBoxWrapper = styled.div`

@@ -1,14 +1,29 @@
 import InputBox from "./common/InputBox";
 import CARD_FORM_MESSAGE from "../../constants/cardFormMessage";
 import styled from "@emotion/styled";
-import { ExpirationPeriodValue } from "../../@types/CreditCard";
 import CARD_INPUTBOX_NAME from "../../constants/cardInputBoxName";
+import THEME from "../../styles/theme";
+
+interface ValidationResult {
+  isValid: boolean;
+  errorMessage: string;
+}
+
+export interface ExpirationPeriodValue {
+  month: string;
+  year: string;
+}
+
+interface ExpiryDate {
+  inputValue: Record<keyof ExpirationPeriodValue, string>;
+  validationResult: ValidationResult;
+  handleExpiryChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleExpiryDateBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
+}
 
 interface InputExpirationPeriodProps {
-  inputValue: ExpirationPeriodValue;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleBlur: (e: React.FocusEvent<HTMLInputElement, Element>) => void;
-  inputError: boolean;
+  expiryDate: ExpiryDate;
+  id: string;
 }
 
 interface InputboxData {
@@ -16,19 +31,14 @@ interface InputboxData {
   name: string;
 }
 
-const InputExpirationPeriod = ({
-  inputValue,
-  handleChange,
-  handleBlur,
-  inputError,
-}: InputExpirationPeriodProps) => {
+const InputExpirationPeriod = ({ expiryDate, id }: InputExpirationPeriodProps) => {
   const inputboxData: InputboxData[] = [
     {
-      inputValue: inputValue.month,
+      inputValue: expiryDate.inputValue.month,
       name: CARD_INPUTBOX_NAME.expirationPeriod.month,
     },
     {
-      inputValue: inputValue.year,
+      inputValue: expiryDate.inputValue.year,
       name: CARD_INPUTBOX_NAME.expirationPeriod.year,
     },
   ];
@@ -41,13 +51,13 @@ const InputExpirationPeriod = ({
           <InputBox
             key={`expirationDate${idx + 1}`}
             inputValue={data.inputValue}
-            handleChange={handleChange}
-            onBlur={handleBlur}
+            handleChange={expiryDate.handleExpiryChange}
+            onBlur={expiryDate.handleExpiryDateBlur}
             size="medium"
             placeholder="MM"
-            id={`expirationDate${idx + 1}`}
+            id={`${id}${idx + 1}`}
             name={data.name}
-            isError={inputError}
+            isError={!expiryDate.validationResult.isValid}
             autoFocus={idx === 0}
           />
         ))}
@@ -69,7 +79,7 @@ const InputLabel = styled.label`
   font-weight: 500;
   line-height: 15px;
   text-align: left;
-  color: rgba(10, 13, 19, 1);
+  color: ${THEME.DEFAULT.black};
   margin-bottom: 8px;
 `;
 

@@ -5,7 +5,7 @@ import VALIDATE_STATUS, { ValidateStatus } from "../constants/validateStatus";
 import CARD_INPUT_LENGTH from "../constants/cardInputLength";
 
 const ValidatorCondition = {
-  checkMaxDigit(value: string, digit: number) {
+  checkIsOverMaxDigit(value: string, digit: number) {
     return value.length > digit;
   },
 
@@ -34,7 +34,7 @@ const Validator = {
   checkCreditCardNumber(value: string): ValidateStatus {
     const maxDigit = 4;
 
-    if (ValidatorCondition.checkMaxDigit(value, maxDigit)) return VALIDATE_STATUS.notValid;
+    if (ValidatorCondition.checkIsOverMaxDigit(value, maxDigit)) return VALIDATE_STATUS.notValid;
 
     if (!ValidatorCondition.checkIsDigit(value)) {
       return VALIDATE_STATUS.error;
@@ -47,7 +47,7 @@ const Validator = {
     const maxDigit = 2;
     const limitValue = 12;
 
-    if (ValidatorCondition.checkMaxDigit(value, maxDigit)) return VALIDATE_STATUS.notValid;
+    if (ValidatorCondition.checkIsOverMaxDigit(value, maxDigit)) return VALIDATE_STATUS.notValid;
 
     if (!ValidatorCondition.checkIsDigit(value)) return VALIDATE_STATUS.error;
 
@@ -70,7 +70,7 @@ const Validator = {
 
   checkCreditCardCvc(value: string): ValidateStatus {
     const maxDigit = 3;
-    if (ValidatorCondition.checkMaxDigit(value, maxDigit)) return VALIDATE_STATUS.notValid;
+    if (ValidatorCondition.checkIsOverMaxDigit(value, maxDigit)) return VALIDATE_STATUS.notValid;
 
     if (!ValidatorCondition.checkIsDigit(value)) return VALIDATE_STATUS.error;
 
@@ -79,7 +79,7 @@ const Validator = {
 
   checkCreditCardPassword(value: string): ValidateStatus {
     const maxDigit = 2;
-    if (ValidatorCondition.checkMaxDigit(value, maxDigit)) return VALIDATE_STATUS.notValid;
+    if (ValidatorCondition.checkIsOverMaxDigit(value, maxDigit)) return VALIDATE_STATUS.notValid;
 
     if (!ValidatorCondition.checkIsDigit(value)) return VALIDATE_STATUS.error;
 

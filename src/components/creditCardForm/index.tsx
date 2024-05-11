@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import THEME from "../../styles/theme";
 
 interface CreditCardFormProps {
   title: string;
@@ -23,6 +24,7 @@ export default CreditCardForm;
 const CreditCardFormContainer = styled.div`
   width: 315px;
   height: 137px;
+  z-index: 99;
 `;
 
 const TitleWrapper = styled.h1`
@@ -40,7 +42,7 @@ const DescriptionWrapper = styled.h3`
   font-weight: 400;
   line-height: 13.76px;
   text-align: left;
-  color: rgba(139, 149, 161, 1);
+  color: ${THEME.DEFAULT.grey};
   margin-bottom: 16px;
 `;
 
