@@ -29,4 +29,5 @@ const ButtonBox = styled.button`
   &: hover {
     cursor: pointer;
   }
+  z-index: 99;
 `;

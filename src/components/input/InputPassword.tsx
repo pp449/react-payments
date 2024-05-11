@@ -4,28 +4,37 @@ import styled from "@emotion/styled";
 import CARD_INPUTBOX_NAME from "../../constants/cardInputBoxName";
 import THEME from "../../styles/theme";
 
-interface InputCvcProps {
-  inputValue: string;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleBlur: (e: React.FocusEvent<HTMLInputElement, Element>) => void;
-  inputError: boolean;
+interface ValidationResult {
+  isValid: boolean;
+  errorMessage: string;
+}
+
+interface Password {
+  readonly inputValue: string;
+  readonly validationResult: ValidationResult;
+  readonly handlePasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  readonly handlePasswordBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
+}
+
+interface InputPasswordProps {
+  password: Password;
   id: string;
 }
 
-const InputPassword = ({ inputValue, handleChange, handleBlur, inputError, id }: InputCvcProps) => {
+const InputPassword = ({ password, id }: InputPasswordProps) => {
   return (
     <InputContainer>
       <InputLabel htmlFor="password">{CARD_FORM_MESSAGE.twoDigitPassword}</InputLabel>
       <InputBox
         type="password"
-        inputValue={inputValue}
-        handleChange={handleChange}
-        onBlur={handleBlur}
+        inputValue={password.inputValue}
+        handleChange={password.handlePasswordChange}
+        onBlur={password.handlePasswordBlur}
         size="large"
         placeholder="카드 비밀번호"
         id={id}
         name={CARD_INPUTBOX_NAME.authentication.password}
-        isError={inputError}
+        isError={!password.validationResult.isValid}
         autoFocus
       />
     </InputContainer>

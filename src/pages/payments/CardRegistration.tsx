@@ -1,19 +1,10 @@
 import styled from "@emotion/styled";
 import CreditCardForm from "../../components/creditCardForm";
 import CARD_FORM_MESSAGE from "../../constants/cardFormMessage";
-import {
-  AuthenticationValue,
-  CardNumberValue,
-  ExpirationPeriodValue,
-  InfoValue,
-  OwnerValue,
-} from "../../@types/CreditCard";
 import InputCreditCardNumber from "../../components/input/InputCreditCardNumber";
 import InputExpirationPeriod from "../../components/input/InputExpirationPeriod";
 import InputOwnerName from "../../components/input/InputOwnerName";
-import SelectBox from "../../components/select/common/SelectBox";
-import CARDTYPE, { CardType } from "../../constants/cardType";
-import useSelect from "../../hooks/useSelect";
+
 import InputCVC from "../../components/input/InputCVC";
 import InputPassword from "../../components/input/InputPassword";
 import useCurrentIndex from "../../hooks/useCurrentIndex";
@@ -21,11 +12,13 @@ import { useEffect, useState } from "react";
 import CARD_INPUT_LENGTH from "../../constants/cardInputLength";
 import Button from "../../components/button/common";
 import { useNavigate } from "react-router-dom";
-import useFormInputBlur from "../../hooks/useFormInputBlur";
-import isInputComplete from "../../utils/isInputComplete";
-import CARD_EMPTY from "../../constants/cardEmpty";
 import CreditCard from "../../components/creditCard";
 import SIGN from "../../constants/sign";
+import { useCVC, useCardHolder, useCardNumber, useExpiryDate, usePassword } from "darr-input-hooks";
+import isCardNumberComplete from "../../utils/isCardNumberComplete";
+import isExpiryDateComplete from "../../utils/isExpiryDateComplete";
+import CardSelector from "../../components/cardSelector/CardSelector";
+import { CardType } from "../../constants/cardType";
 
 interface CreditCardForms {
   title: string;
@@ -35,127 +28,86 @@ interface CreditCardForms {
 }
 
 const CardRegistration = () => {
-  const [cardNumber, setCardNumber, blurCardNumber, cardNumberError] =
-    useFormInputBlur<CardNumberValue>(CARD_EMPTY.cardNumber);
-  const { isDropdown, handleDropdown, selected, handleSelected } = useSelect<CardType>();
-  const [expirationPeriod, setExpirationPeriod, blurExpirationPeriod, expirationPeriodError] =
-    useFormInputBlur<ExpirationPeriodValue>(CARD_EMPTY.expiration);
-  const [owner, setOwner, blurOwner, ownerError] = useFormInputBlur<OwnerValue>(CARD_EMPTY.owner);
-  const [info, setInfo, blurInfo, infoError] = useFormInputBlur<InfoValue>(CARD_EMPTY.info);
-  const [authentication, setAuthentication, blurAuthentication, authenticationError] =
-    useFormInputBlur<AuthenticationValue>(CARD_EMPTY.authentication);
+  const cardNumber = useCardNumber("");
+  const expiryDate = useExpiryDate({ month: "", year: "" });
+  const cardHolder = useCardHolder("");
+  const cvcNumber = useCVC("");
+  const password = usePassword("");
+  const [selected, setSelected] = useState<CardType>();
 
   const [showPreviewCardBack, setShowPreviewCardBack] = useState(false);
 
-  const completeStatus = isInputComplete(
-    cardNumber,
+  const completeStatus = [
+    isCardNumberComplete(cardNumber),
     !!selected,
-    expirationPeriod,
-    !!owner.name,
-    info,
-    authentication
-  );
+    isExpiryDateComplete(expiryDate),
+    !!cardHolder.inputValue,
+    cvcNumber.inputValue.length === 3,
+    password.inputValue.length === 2,
+  ];
+
   const currentIndex = useCurrentIndex(...completeStatus);
   const isFormComplete = completeStatus.every(Boolean);
   const router = useNavigate();
 
   useEffect(() => {
-    if (info.cvc) setShowPreviewCardBack(true);
-    if (info.cvc.length === CARD_INPUT_LENGTH.cvc) setShowPreviewCardBack(false);
-  }, [info.cvc]);
+    if (cvcNumber.inputValue) setShowPreviewCardBack(true);
+    if (cvcNumber.inputValue.length === CARD_INPUT_LENGTH.cvc) setShowPreviewCardBack(false);
+  }, [cvcNumber.inputValue]);
 
   const creditCardForms: CreditCardForms[] = [
     {
       title: CARD_FORM_MESSAGE.inputCardNumber,
       description: CARD_FORM_MESSAGE.cardNumberDescription,
-      inputError: cardNumberError,
-      childComponent: (
-        <InputCreditCardNumber
-          inputValue={cardNumber}
-          handleChange={setCardNumber}
-          handleBlur={blurCardNumber}
-          inputError={cardNumberError}
-          id="creditCardNumber"
-        />
-      ),
+      inputError: cardNumber.validationResult.errorMessage,
+      childComponent: <InputCreditCardNumber cardNumber={cardNumber} id="creditCardNumber" />,
     },
     {
       title: CARD_FORM_MESSAGE.inputCardType,
       description: CARD_FORM_MESSAGE.domasticCardOnly,
       inputError: false,
       childComponent: (
-        <SelectBox
-          isDropdown={isDropdown}
-          handleDropdown={handleDropdown}
+        <CardSelector
           selected={selected}
-          handleSelected={handleSelected}
-          optionsContents={CARDTYPE}
-          placeholder={CARD_FORM_MESSAGE.inputCardTypePlaceholder}
+          handleSelected={(selectedBank) => setSelected(selectedBank)}
         />
       ),
     },
     {
       title: CARD_FORM_MESSAGE.inputCardExpirationDate,
       description: CARD_FORM_MESSAGE.cardExpirationDateDescription,
-      inputError: expirationPeriodError,
-      childComponent: (
-        <InputExpirationPeriod
-          inputValue={expirationPeriod}
-          handleChange={setExpirationPeriod}
-          handleBlur={blurExpirationPeriod}
-          inputError={expirationPeriodError}
-          id="expirationDate"
-        />
-      ),
+      inputError: expiryDate.validationResult.errorMessage,
+      childComponent: <InputExpirationPeriod expiryDate={expiryDate} id="expirationDate" />,
     },
     {
       title: CARD_FORM_MESSAGE.inputCardOwner,
       description: SIGN.empty,
-      inputError: ownerError,
-      childComponent: (
-        <InputOwnerName
-          inputValue={owner.name}
-          handleChange={setOwner}
-          handleBlur={blurOwner}
-          inputError={ownerError}
-          id="ownerName"
-        />
-      ),
+      inputError: cardHolder.validationResult.errorMessage,
+      childComponent: <InputOwnerName cardHolder={cardHolder} id="ownerName" />,
     },
     {
       title: CARD_FORM_MESSAGE.inputCvc,
       description: SIGN.empty,
-      inputError: infoError,
-      childComponent: (
-        <InputCVC
-          inputValue={info.cvc}
-          handleChange={setInfo}
-          handleBlur={blurInfo}
-          inputError={infoError}
-          id="cvcNumber"
-        />
-      ),
+      inputError: cvcNumber.validationResult.errorMessage,
+      childComponent: <InputCVC cvcNumber={cvcNumber} id="cvcNumber" />,
     },
     {
       title: CARD_FORM_MESSAGE.inputCardPassword,
       description: CARD_FORM_MESSAGE.cardPasswordDescription,
-      inputError: authenticationError,
-      childComponent: (
-        <InputPassword
-          inputValue={authentication.password}
-          handleChange={setAuthentication}
-          handleBlur={blurAuthentication}
-          inputError={authenticationError}
-          id="password"
-        />
-      ),
+      inputError: password.validationResult.errorMessage,
+      childComponent: <InputPassword password={password} id="password" />,
     },
   ];
 
   return (
     <PaymentsContainer>
       <CreditCard
-        {...{ showPreviewCardBack, expirationPeriod, cardNumber, owner, selected, info }}
+        cardNumber={cardNumber.inputValue}
+        showPreviewCardBack={showPreviewCardBack}
+        expirationPeriod={expiryDate.inputValue}
+        owner={cardHolder.inputValue}
+        selected={selected}
+        info={cvcNumber.inputValue}
       />
       <InputFormContainer>
         {creditCardForms.map((formData, idx) => {
@@ -181,7 +133,7 @@ const CardRegistration = () => {
               router("/register/success", {
                 state: {
                   selectedCard: selected,
-                  cardNumber: cardNumber.firstValue,
+                  cardNumber: cardNumber.inputValue.split(" ")[0],
                 },
               })
             }

@@ -33,6 +33,7 @@ const Container = styled.div`
   margin: 0 auto;
   max-width: 350px;
   padding: 15% 5%;
+  z-index: -1;
 `;
 
 const CheckBoxWrapper = styled.div`

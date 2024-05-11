@@ -4,7 +4,7 @@ export type CardNumber = string | null;
 export type CreditCardNumber = [CardNumber, CardNumber, CardNumber, CardNumber];
 
 export interface CreditCardProps {
-  creditCardNumber: CreditCardNumber;
+  creditCardNumber: string;
   expirationPeriod: string;
   ownerName: string;
   selectedCard?: CardType;

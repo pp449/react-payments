@@ -21,11 +21,7 @@ export default Icon;
 const CheckBoxContainer = styled.div`
   display: flex;
   align-items: center;
-  background: ${THEME.PRIMARY.darkGrey};
-  border-radius: 50%;
   text-align: center;
-  width: 76px;
-  height: 76px;
 `;
 
 const Img = styled.img`

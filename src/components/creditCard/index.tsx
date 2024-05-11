@@ -12,10 +12,10 @@ import CreditCardFront from "./front";
 interface CreditCardProps {
   showPreviewCardBack: boolean;
   expirationPeriod: ExpirationPeriodValue;
-  cardNumber: CardNumberValue;
-  owner: OwnerValue;
+  cardNumber: string;
+  owner: string;
   selected: CardType | undefined;
-  info: InfoValue;
+  info: string;
 }
 
 const CreditCard = ({
@@ -33,18 +33,13 @@ const CreditCard = ({
 
   return !showPreviewCardBack ? (
     <CreditCardFront
-      creditCardNumber={[
-        cardNumber.firstValue,
-        cardNumber.secondValue,
-        cardNumber.thirdValue,
-        cardNumber.fourthValue,
-      ]}
+      creditCardNumber={cardNumber}
       expirationPeriod={formatExpirationPeriod()}
-      ownerName={owner.name}
+      ownerName={owner}
       selectedCard={selected}
     />
   ) : (
-    <CreditCardBack cvcNumber={info.cvc} /> // cvcNumber props 전달
+    <CreditCardBack cvcNumber={info} /> // cvcNumber props 전달
   );
 };
 

@@ -24,6 +24,7 @@ export default CreditCardForm;
 const CreditCardFormContainer = styled.div`
   width: 315px;
   height: 137px;
+  z-index: 99;
 `;
 
 const TitleWrapper = styled.h1`

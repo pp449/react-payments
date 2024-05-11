@@ -1,33 +1,11 @@
 import styled from "@emotion/styled";
-import { CreditCardProps, CreditCardNumber } from "../../../@types/CreditCard";
-import replaceToMaskingNumber from "../../../utils/replaceToMaskingNumber";
-import { useMemo } from "react";
+import { CreditCardProps } from "../../../@types/CreditCard";
 import THEME from "../../../styles/theme";
 
-const maskLastEightDigits = (creditCardNumber: CreditCardNumber) => {
-  const digitKeys = ["firstNumber", "secondNumber", "thirdNumber", "fourthNumber"];
-  const lastEightIndex = [2, 3];
-
-  return creditCardNumber.map((number, idx) =>
-    lastEightIndex.includes(idx) ? (
-      <CreditCardInfoSymbol key={digitKeys[idx]}>
-        {replaceToMaskingNumber(number)}
-      </CreditCardInfoSymbol>
-    ) : (
-      <CreditCardInfoNumber key={digitKeys[idx]}>{number}</CreditCardInfoNumber>
-    )
-  );
-};
-
 const CreditCardInfo = ({ creditCardNumber, expirationPeriod, ownerName }: CreditCardProps) => {
-  const maskedCreditCardNumber = useMemo(
-    () => maskLastEightDigits(creditCardNumber),
-    [creditCardNumber]
-  );
-
   return (
     <CreditCardInfoContainer>
-      <CreditCardInfoWrapper>{maskedCreditCardNumber}</CreditCardInfoWrapper>
+      <CreditCardInfoWrapper>{creditCardNumber}</CreditCardInfoWrapper>
       <CreditCardExpirationPeriod>{expirationPeriod}</CreditCardExpirationPeriod>
       <CreditCardOwnerInfo>{ownerName.toUpperCase()}</CreditCardOwnerInfo>
     </CreditCardInfoContainer>
@@ -55,19 +33,6 @@ const CreditCardInfoWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   height: 20px;
-`;
-
-const CreditCardInfoNumber = styled.h3`
-  width: 42px;
-  height: 20px;
-  overflow: hidden;
-`;
-
-const CreditCardInfoSymbol = styled.h3`
-  font-size: 8px;
-  width: 42px;
-  height: 20px;
-  overflow: hidden;
 `;
 
 const CreditCardExpirationPeriod = styled.h3`

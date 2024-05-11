@@ -4,33 +4,36 @@ import styled from "@emotion/styled";
 import CARD_INPUTBOX_NAME from "../../constants/cardInputBoxName";
 import THEME from "../../styles/theme";
 
+interface ValidationResult {
+  isValid: boolean;
+  errorMessage: string;
+}
+
+interface CardHolder {
+  readonly inputValue: string;
+  readonly validationResult: ValidationResult;
+  readonly handleCardHolderChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  readonly handleCardHolderBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
+}
+
 interface InputOwnerNameProps {
-  inputValue: string;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleBlur: (e: React.FocusEvent<HTMLInputElement, Element>) => void;
-  inputError: boolean;
+  cardHolder: CardHolder;
   id: string;
 }
 
-const InputOwnerName = ({
-  inputValue,
-  handleChange,
-  handleBlur,
-  inputError,
-  id,
-}: InputOwnerNameProps) => {
+const InputOwnerName = ({ cardHolder, id }: InputOwnerNameProps) => {
   return (
     <InputContainer>
       <InputLabel htmlFor="ownerName">{CARD_FORM_MESSAGE.cardOwner}</InputLabel>
       <InputBox
-        inputValue={inputValue.toUpperCase()}
-        handleChange={handleChange}
-        onBlur={handleBlur}
+        inputValue={cardHolder.inputValue.toUpperCase()}
+        handleChange={cardHolder.handleCardHolderChange}
+        onBlur={cardHolder.handleCardHolderBlur}
         size="large"
         placeholder="JOHN DOE"
         id={id}
         name={CARD_INPUTBOX_NAME.owner.name}
-        isError={inputError}
+        isError={!cardHolder.validationResult.isValid}
         autoFocus
       />
     </InputContainer>
