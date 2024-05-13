@@ -321,6 +321,7 @@ Error generating stack: `+i.message+`
   position: fixed;
   bottom: 0;
   width: 100%;
+  z-index: 99;
 `,_v=()=>{const e=ea(),t=sd(),{selectedCard:n,cardNumber:r}=e.state;if(!n||!r){t("/");return}return E.jsxs(Qv,{children:[E.jsx(Wv,{children:E.jsx(zd,{kind:"checkBox"})}),E.jsx(Ds,{children:`${r}로 시작하는`}),E.jsx(Ds,{children:`${n}가 등록되었어요.`}),E.jsx(Td,{content:"확인",onClick:()=>t("/"),styles:{borderRadius:"5px",marginTop:"30px"}})]})},Qv=I.div`
   text-align: center;
   margin: 0 auto;
